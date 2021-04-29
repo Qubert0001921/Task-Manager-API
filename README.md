@@ -1,3 +1,3 @@
-# Task Manager API Version
+# Task Manager
 
 ## Task Manager API with Web client
