@@ -1,7 +1,35 @@
 const Task = require('../../db/models/task');
 
 class Controller {
-    async newTask(req, res) {      
+    async editTask(req, res) {
+        try {
+            const id = req.params.id;
+            const title = req.body.title;
+            const desc = req.body.desc
+
+            const task = await Task.findOne({ _id: id });
+
+            if(task !== null) {
+                task.title = title;
+                task.desc = desc;
+
+                await task.save()
+
+                res.status(201).json(task);
+            } else {
+                res.status(400).json({
+                    message: "Can't update task because it's not exist"
+                });
+            }
+            
+        } catch {
+            return res.status(500).json({
+                message: "Server error!"
+            });
+        }
+    }
+
+    async createNewTask(req, res) {      
         try {
             const title = req.body.title;
             const desc = req.body.desc;
