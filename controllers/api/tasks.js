@@ -44,10 +44,10 @@ class Controller {
                 });
     
                 newTask.save();
-                res.satus(201).json(newTask);
+                res.status(201).json(newTask);
             } else {
                 res.status(400).json({
-                    message: "Can't create task because it's not exist"
+                    message: `Can't create task '${title}', because it's exist`
                 });
             }
         } catch {

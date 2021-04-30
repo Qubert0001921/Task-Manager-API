@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
+const { database } = require('../config/appConfig');
 
-mongoose.connect("mongodb://127.0.0.1:27017/task-manager", {
+mongoose.connect(database, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
