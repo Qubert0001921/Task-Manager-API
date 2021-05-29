@@ -1,4 +1,4 @@
-const Task = require('../../db/models/task');
+const Task = require('../../db/models/task.model');
 
 class Controller {
     async editTask(req, res) {
@@ -43,7 +43,7 @@ class Controller {
                     desc: desc
                 });
     
-                newTask.save();
+                await newTask.save();
                 res.status(201).json(newTask);
             } else {
                 res.status(400).json({

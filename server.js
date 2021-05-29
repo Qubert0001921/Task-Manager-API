@@ -1,9 +1,11 @@
 const dotenv = require('dotenv');
 dotenv.config();
 const express = require('express');
-const config = require('./config/appConfig');
+const config = require('./config');
 const app = express();
-const tasksRouter = require('./routes/api/tasks');
+const tasksRouter = require('./routes/api/tasks.router');
+const authRouter = require('./routes/api/auth.router');
+const usersRouter = require('./routes/api/users.router');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
@@ -13,6 +15,8 @@ require('./db/connection');
 app.use(bodyParser.json());
 app.use(cors());
 app.use('/api/tasks', tasksRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/users', usersRouter);
 
 app.listen(config.port, () => {
     console.log("\x1b[1m( Task Manager API )\x1b[0m")

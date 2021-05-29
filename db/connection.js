@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { database } = require('../config/appConfig');
+const { database } = require('../config');
 
 mongoose.connect(database, {
     useNewUrlParser: true,

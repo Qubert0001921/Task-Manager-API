@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const tasksController = require('../../controllers/api/tasks');
+const tasksController = require('../../controllers/api/tasks.controller');
 
 // Create task
 router.post('/', tasksController.createNewTask);
