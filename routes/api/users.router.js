@@ -7,9 +7,15 @@ const { authenticate } = require('../../middlewares');
 router.post('/', usersController.createUser);
 
 // get users
-router.get('/', authenticate, usersController.getUsers);
+router.get('/', usersController.getUsers);
 
 // get user by id
 router.get('/:id', usersController.getUserById);
+
+// update user data
+router.put('/:id', usersController.updateUser);
+
+// delete user
+router.delete('/:id', usersController.deleteUser);
 
 module.exports = router;
