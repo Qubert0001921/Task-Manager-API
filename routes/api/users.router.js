@@ -7,7 +7,7 @@ const { authenticate } = require('../../middlewares');
 router.post('/', usersController.createUser);
 
 // get users
-router.get('/', usersController.getUsers);
+router.get('/', authenticate, usersController.getUsers);
 
 // get user by id
 router.get('/:id', usersController.getUserById);

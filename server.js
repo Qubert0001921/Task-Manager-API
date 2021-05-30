@@ -6,6 +6,7 @@ const app = express();
 const tasksRouter = require('./routes/api/tasks.router');
 const authRouter = require('./routes/api/auth.router');
 const usersRouter = require('./routes/api/users.router');
+const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
@@ -13,10 +14,13 @@ const cors = require('cors');
 require('./db/connection');
 
 app.use(bodyParser.json());
+app.use(cookieParser());
 app.use(cors());
 app.use('/api/tasks', tasksRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
+
+app.use((req, res) => { res.sendStatus(404); });
 
 app.listen(config.port, () => {
     console.log("\x1b[1m( Task Manager API )\x1b[0m")

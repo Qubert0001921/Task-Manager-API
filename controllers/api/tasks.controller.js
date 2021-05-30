@@ -1,13 +1,16 @@
 const Task = require('../../db/models/task.model');
+const User = require('../../db/models/user.model');
 
 class Controller {
     async editTask(req, res) {
         try {
             const id = req.params.id;
-            const title = req.body.title;
-            const desc = req.body.desc
+            const { title, desc } = req.body;
+            const userId = req.user.id;
 
-            const task = await Task.findOne({ _id: id });
+            if(!(title || desc)) return res.status(400).json({ message: "title or desc not exist" });
+
+            const task = await Task.findOne({ _id: id, userId: userId });
 
             if(task !== null) {
                 task.title = title;
@@ -31,25 +34,19 @@ class Controller {
 
     async createNewTask(req, res) {      
         try {
-            const title = req.body.title;
-            const desc = req.body.desc;
-            const taskExist = await Task.findOne({
-                title: title
+            const { title, desc } = req.body;
+            const userId = req.user.id;
+
+            if(!(title || desc )) return res.status(400).json({ message: "title or desc id not exist" });
+
+            const newTask = new Task({
+                title: title,
+                desc: desc,
+                userId: userId
             });
-    
-            if(taskExist === null) {
-                const newTask = new Task({
-                    title: title,
-                    desc: desc
-                });
-    
-                await newTask.save();
-                res.status(201).json(newTask);
-            } else {
-                res.status(400).json({
-                    message: `Can't create task '${title}', because it's exist`
-                });
-            }
+
+            await newTask.save();
+            res.status(201).json(newTask);
         } catch {
             return res.status(500).json({
                 message: "Server error!"
@@ -58,9 +55,10 @@ class Controller {
     }
 
     async getAllTasks(req, res) {
+        const userId = req.user.id;
         let tasks
         try {
-            tasks = await Task.find({});
+            tasks = await Task.find({ userId: userId });
         } catch {
             return res.status(500).json({
                 message: "Server error!"
@@ -73,8 +71,10 @@ class Controller {
     async getOneTask(req, res) {
         try {
             const taskId = req.params.id;
+            const userId = req.user.id;
             const task = await Task.findOne({
-                _id: taskId
+                _id: taskId,
+                userId: userId
             });
 
             if(task !== null) {
@@ -95,10 +95,11 @@ class Controller {
     async deleteOneTask(req, res) {
         try {
             const taskId = req.params.id;
-            const taskExist = await Task.findOne({ _id: taskId });
+            const userId = req.user.id;
+            const taskExist = await Task.findOne({ _id: taskId, userId: userId });
 
             if (taskExist !== null) {
-                await Task.deleteOne({ _id: taskId });
+                await Task.deleteOne({ _id: taskId, userId: userId });
 
                 res.sendStatus(204);
             } else {

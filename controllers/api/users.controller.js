@@ -6,6 +6,8 @@ class Controller {
             const { name, password } = req.body;
             const userExists = await User.findOne({name: name});
 
+            if(!(name || password)) return res.status(400).json({message: "name or password not exist"});
+
             if(userExists === null) {
                 const newUser = new User({ name: name, password: password });
                 await newUser.save();
@@ -41,6 +43,9 @@ class Controller {
         try {
             const id = req.params.id;
             const { name, password } = req.body;
+
+            if(!(name || password)) return res.status(400).json({message: "name or password not exist"});
+
             const nameExist = await User.findOne({ name: name });
             let user;
             
